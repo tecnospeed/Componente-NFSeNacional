@@ -16,6 +16,6 @@ Assim, você fica livre para se dedicar aos requisitos mais importantes do seu s
 
 **Para saber mais sobre o Componente NFSe Nacional, [clique aqui](https://atendimento.tecnospeed.com.br/hc/pt-br/articles/12236286816791 "Saiba mais").**
 
-**Para baixar a versão Trial, [clique aqui](https://s3-sa-east-1.amazonaws.com/tecnospeed-trial/setup_nfse_nacional_tecnoaccount_1.0.1.0.exe "Baixar o Componente NFSe Trial")**.
+**Para baixar a versão Trial, [clique aqui](https://s3-sa-east-1.amazonaws.com/tecnospeed-trial/setup_nfse_nacional_tecnoaccount_1.0.1.2.exe "Baixar o Componente NFSe Trial")**.
 
 **Para ver uma lista com o histórico de mudanças, [clique aqui](https://github.com/tecnospeed/Componente-NFSeNacional/blob/master/CHANGELOG.md "Changelog").**
