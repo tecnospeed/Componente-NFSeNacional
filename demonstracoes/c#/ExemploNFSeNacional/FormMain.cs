@@ -75,6 +75,7 @@ namespace DemoNFseNacionalCSharp
             {
                 ClearFields();
                 rtbRetornoXml.Text = nfseNacional.ConsultarEventosNFSe(dialog.ChaveAcesso);
+                GetRetorno();
             }
         }
 
@@ -234,6 +235,25 @@ namespace DemoNFseNacionalCSharp
                 string filePath = saveFileDialog.FileName;
                 string tx2Path = GetTx2File();
                 nfseNacional.ExportarImpressaoParaPDF(rtbRetornoXml.Text, rtbXmlEnvio.Text, tx2Path, filePath);
+            }
+        }
+
+        private void btnDistribuicaoDFe_Click(object sender, EventArgs e)
+        {
+            using DistribuicaoDFeDialog dialog = new();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                try
+                {
+                    ClearFields();
+                    rtbRetornoXml.Text = nfseNacional.ConsultarDistribuicaoDFe(dialog._tipoConsultaDFe, dialog._chaveOrNsu);
+                    GetRetorno();
+                }
+                finally
+                {
+                    this.Cursor = Cursors.Default;
+                }
             }
         }
     }

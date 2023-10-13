@@ -45,6 +45,7 @@
             label3 = new Label();
             lblAmbiente = new Label();
             gpbOperacoes = new GroupBox();
+            btnDistribuicaoDFe = new Button();
             btnCancelar = new Button();
             btnConsultarEventos = new Button();
             btnConsultar = new Button();
@@ -238,6 +239,7 @@
             // 
             // gpbOperacoes
             // 
+            gpbOperacoes.Controls.Add(btnDistribuicaoDFe);
             gpbOperacoes.Controls.Add(btnLoadConfig);
             gpbOperacoes.Controls.Add(btnConfigIni);
             gpbOperacoes.Controls.Add(lblAmbiente);
@@ -252,6 +254,17 @@
             gpbOperacoes.TabIndex = 6;
             gpbOperacoes.TabStop = false;
             gpbOperacoes.Text = "Operações";
+            // 
+            // btnDistribuicaoDFe
+            // 
+            btnDistribuicaoDFe.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnDistribuicaoDFe.Location = new Point(208, 118);
+            btnDistribuicaoDFe.Name = "btnDistribuicaoDFe";
+            btnDistribuicaoDFe.Size = new Size(180, 23);
+            btnDistribuicaoDFe.TabIndex = 15;
+            btnDistribuicaoDFe.Text = "&8- Distribuição DFe";
+            btnDistribuicaoDFe.UseVisualStyleBackColor = true;
+            btnDistribuicaoDFe.Click += btnDistribuicaoDFe_Click;
             // 
             // btnCancelar
             // 
@@ -650,5 +663,6 @@
         private Button btnExportarPdf;
         private Button btnEditarImpressao;
         private Button btnVisualizarImpressao;
+        private Button btnDistribuicaoDFe;
     }
 }
