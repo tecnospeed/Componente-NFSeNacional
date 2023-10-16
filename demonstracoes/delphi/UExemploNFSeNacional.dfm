@@ -361,21 +361,13 @@ object frmExemplo: TfrmExemplo
           EditLabel.Caption = 'Chave Acesso:'
           TabOrder = 5
         end
-        object chkOCX: TCheckBox
-          Left = 144
-          Top = 8
-          Width = 41
-          Height = 17
-          Caption = 'OCX'
-          TabOrder = 6
-        end
         object btnConsultarMunicipios: TButton
           Left = 7
           Top = 201
           Width = 179
           Height = 24
           Caption = 'Consultar Munic'#237'pios'
-          TabOrder = 7
+          TabOrder = 6
           OnClick = btnConsultarMunicipiosClick
         end
         object edt1: TLabeledEdit
@@ -386,7 +378,7 @@ object frmExemplo: TfrmExemplo
           EditLabel.Width = 36
           EditLabel.Height = 13
           EditLabel.Caption = 'Cidade:'
-          TabOrder = 8
+          TabOrder = 7
         end
       end
       object edtCNPJSoftwareHouse: TLabeledEdit

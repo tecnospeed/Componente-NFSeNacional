@@ -56,7 +56,6 @@ type
     btnVisualizar: TButton;
     edtChaveAcesso: TLabeledEdit;
     btnCancelarNFSe: TButton;
-    chkOCX: TCheckBox;
     btnConsultarMunicipios: TButton;
     btnDistribuicaoDFe: TButton;
     edt1: TLabeledEdit;
@@ -91,16 +90,11 @@ type
   private
     fLogEnvio: string;
     NFSe: TspdNFSeNacional;
-    NFSeX: TspdNFSeNacionalX;
     procedure CheckConfig;
     procedure OnLog(const aNome, aID, aFileName: string);
     procedure getRetornoTipado;
-    procedure getRetornoTipadoX;
     procedure getRetornoJson;
-    procedure getRetornoJsonX;
     procedure getRetornoCSV;
-    procedure getRetornoCSVX;
-    function UsarOCX: Boolean;
   public
     { Public declarations }
   end;
@@ -129,13 +123,11 @@ const
 procedure TfrmExemplo.FormCreate(Sender: TObject);
 begin
   NFSe := TspdNFSeNacional.Create(nil);
-  NFSeX := TspdNFSeNacionalX.Create(nil);
 end;
 
 procedure TfrmExemplo.FormDestroy(Sender: TObject);
 begin
   NFSe.Free;
-  NFSeX.Free;
 end;
 
 procedure TfrmExemplo.FormShow(Sender: TObject);
@@ -148,17 +140,8 @@ begin
 end;
 
 procedure TFrmExemplo.CheckConfig;
-var
-  _CNPJ, _CNPJx: string;
-  _bConfig: Boolean;
 begin
-  _CNPJ := trim(NFSe.CNPJ);
-
-  _CNPJx := trim(NFSeX.CNPJ);
-
-  _bConfig := (_CNPJ <> EmptyStr) or (_CNPJx <> EmptyStr);
-
-  if (not _bConfig) then
+  if Trim(NFSe.CNPJ) = EmptyStr then
     raise Exception.Create('Favor configurar o componente antes de prosseguir!');
 end;
 
@@ -250,28 +233,14 @@ end;
 {Exemplo de configuração do componente NFSe}
 procedure TfrmExemplo.btnLoadConfigClick(Sender: TObject);
 begin
-  if UsarOCX then
-  begin
-    NFSeX.ConfigurarSoftwareHouse(edtCNPJSoftwareHouse.Text,edtTokenSoftwareHouse.Text);
-    NFSeX.DiagnosticMode := False;
-    NFSeX.LoadConfig('');
+  NFSe.ConfigurarSoftwareHouse(edtCNPJSoftwareHouse.Text,edtTokenSoftwareHouse.Text);
+  NFSe.DiagnosticMode := False;
+  NFSe.LoadConfig;
 
-    edtCNPJ.Text := NFSeX.CNPJ;
-    edtInscMunicipal.Text := NFSeX.InscricaoMunicipal;
-    cbListaCertificados.Text := NFSeX.NomeCertificado;
-    lblAmbiente.Visible := (NFSeX.Ambiente = akProducao);
-  end
-  else
-  begin
-    NFSe.ConfigurarSoftwareHouse(edtCNPJSoftwareHouse.Text,edtTokenSoftwareHouse.Text);
-    NFSe.DiagnosticMode := False;
-    NFSe.LoadConfig;
-
-    edtCNPJ.Text := NFSe.CNPJ;
-    edtInscMunicipal.Text := NFSe.InscricaoMunicipal;
-    cbListaCertificados.Text := NFSe.NomeCertificado;
-    lblAmbiente.Visible := (NFSe.Ambiente = akProducao);
-  end;
+  edtCNPJ.Text := NFSe.CNPJ;
+  edtInscMunicipal.Text := NFSe.InscricaoMunicipal;
+  cbListaCertificados.Text := NFSe.NomeCertificado;
+  lblAmbiente.Visible := (NFSe.Ambiente = akProducao);
 end;
 
 procedure TfrmExemplo.btnEnviarClick(Sender: TObject);
@@ -282,23 +251,11 @@ begin
     exit;
   if OpnDlgTx2.Execute then
   begin
-    if UsarOCX then
-      mmXMLEnvio.Text := NFSeX.Enviar(OpnDlgTx2.FileName)
-    else
-      mmXMLEnvio.Text := NFSe.Enviar(OpnDlgTx2.FileName);
+    mmXMLEnvio.Text := NFSe.Enviar(OpnDlgTx2.FileName);
 
-    if UsarOCX then
-    begin
-      getRetornoTipadoX;
-      getRetornoJsonX;
-      getRetornoCSVX;
-    end
-    else
-    begin
-      getRetornoTipado;
-      getRetornoJson;
-      getRetornoCSV;
-    end;
+    getRetornoTipado;
+    getRetornoJson;
+    getRetornoCSV;
   end;
 end;
 
@@ -349,10 +306,7 @@ begin
     begin
       GetParamsManifestacao(_tpManifestacao, _Codigo, _Motivo);
 
-      if UsarOCX then
-        mmXMLEnvio.Text := NFSeX.EnviarManifestacao(_tpManifestacao, edtChaveAcesso.Text, _Codigo, _Motivo)
-      else
-        mmXMLEnvio.Text := NFSe.EnviarManifestacao(_tpManifestacao, edtChaveAcesso.Text, _Codigo, _Motivo);
+      mmXMLEnvio.Text := NFSe.EnviarManifestacao(_tpManifestacao, edtChaveAcesso.Text, _Codigo, _Motivo);
     end;
   finally
     (Sender as TWinControl).Enabled := True;
@@ -421,13 +375,6 @@ begin
     mmXMLEnvio.Text := aFileName;
 end;
 
-function TfrmExemplo.UsarOCX: Boolean;
-begin
-  Result := False;
-  if chkOCX.Checked then
-    Result := True;
-end;
-
 procedure TfrmExemplo.getRetornoTipado;
 var
   i: Integer;
@@ -470,58 +417,10 @@ begin
   end;
 end;
 
-procedure TfrmExemplo.getRetornoTipadoX;
-var
-  i: Integer;
-begin
-  mmTipado.Clear;
-  for i := 0 to NFSeX.RetornoWS.Count - 1 do
-  begin
-    if NFSeX.RetornoWS.Items(i).Status = 'EMPROCESSAMENTO' then
-    begin
-      mmTipado.Lines.Add('Status: EMPROCESSAMENTO');
-    end
-    else if NFSeX.RetornoWS.Items(i).Status = 'ERRO' then
-    begin
-      mmTipado.Lines.Add('Status: ERRO');
-      mmTipado.Lines.Add('Motivo: ' + NFSeX.RetornoWS.Items(i).Motivo);
-    end
-    else
-    begin
-      mmTipado.Lines.Add('Status: ' + NFSeX.RetornoWS.Items(i).Status);
-      mmTipado.Lines.Add('CNPJ: ' + NFSeX.RetornoWS.Items(i).CNPJ);
-      mmTipado.Lines.Add('Inscricao Municipal: ' + NFSeX.RetornoWS.Items(i).InscricaoMunicipal);
-      mmTipado.Lines.Add('Serie do DPS: ' + NFSeX.RetornoWS.Items(i).SerieDps);
-      mmTipado.Lines.Add('Número do DPS: ' + NFSeX.RetornoWS.Items(i).NumeroDps);
-      mmTipado.Lines.Add('Número da NFS-e: ' + NFSeX.RetornoWS.Items(i).NumeroNFSe);
-      mmTipado.Lines.Add('Data de Emissão: ' + NFSeX.RetornoWS.Items(i).DataEmissaoNFSe);
-      mmTipado.Lines.Add('Chave Acesso NFSeX: ' + NFSeX.RetornoWS.Items(i).ChaveAcessoNFSe);
-      mmTipado.Lines.Add('Situação: ' + NFSeX.RetornoWS.Items(i).Situacao);
-      mmTipado.Lines.Add('Data De Cancelamento: ' + NFSeX.RetornoWS.Items(i).DataCancelamento);
-      mmTipado.Lines.Add('Chave de Cancelamento: ' + NFSeX.RetornoWS.Items(i).ChaveCancelamento);
-      mmTipado.Lines.Add('Motivo: ' + NFSeX.RetornoWS.Items(i).Motivo);
-      mmTipado.Lines.Add('XML: ' + NFSeX.RetornoWS.Items(i).XmlImpressao);
-      mmTipado.Lines.Add('Data de Autorização: ' + NFSeX.RetornoWS.Items(i).DataAutorizacao);
-      mmTipado.Lines.Add('');
-      mmTipado.Lines.Add('================================================');
-      mmTipado.Lines.Add('');
-
-      //Tratamentos somente para Demo
-      mmXML.Text := NFSeX.RetornoWS.Items(i).XmlImpressao;
-    end;
-  end;
-end;
-
 procedure TfrmExemplo.getRetornoCSV;
 begin
   mmXMLEnvio.Clear;
   mmXMLEnvio.Text := NFSe.RetornoCSV;
-end;
-
-procedure TfrmExemplo.getRetornoCSVX;
-begin
-  mmXMLEnvio.Clear;
-  mmXMLEnvio.Text := NFSeX.RetornoCSV;
 end;
 
 procedure TfrmExemplo.getRetornoJson;
@@ -530,19 +429,10 @@ begin
   mmJson.Lines.Add(NFSe.RetornoJson);
 end;
 
-procedure TfrmExemplo.getRetornoJsonX;
-begin
-  mmJson.Clear;
-  mmJson.Lines.Add(NFSeX.RetornoJson);
-end;
-
 procedure TfrmExemplo.btnConsultarMunicipiosClick(Sender: TObject);
 begin
   CheckConfig;
-  if UsarOCX then
-    mmXML.Text := NFSeX.ConsultarMunicipiosConveniados
-  else
-    mmXML.Text := NFSe.ConsultarMunicipiosConveniados;
+  mmXML.Text := NFSe.ConsultarMunicipiosConveniados;
 end;
 
 procedure TfrmExemplo.btnConsultarEventosClick(Sender: TObject);
@@ -550,20 +440,11 @@ var
   _XmlEventons: string;
 begin
   CheckConfig;
-  if UsarOCX then
-  begin
-    _XmlEventons := NFSeX.ConsultarEventosNFSe(edtChaveAcesso.Text);
-    getRetornoTipadoX;
-    getRetornoJsonX;
-    getRetornoCSVX;
-  end
-  else
-  begin
-    _XmlEventons := NFSe.ConsultarEventosNFSe(edtChaveAcesso.Text);
-    getRetornoTipado;
-    getRetornoJson;
-    getRetornoCSV;
-  end;
+
+  _XmlEventons := NFSe.ConsultarEventosNFSe(edtChaveAcesso.Text);
+  getRetornoTipado;
+  getRetornoJson;
+  getRetornoCSV;
 
   mmXML.Text := _XmlEventons;
 end;
@@ -571,38 +452,19 @@ end;
 procedure TfrmExemplo.btnConsultarNotaClick(Sender: TObject);
 begin
   CheckConfig;
-  if UsarOCX then
-  begin
-    mmXML.Text := NFSeX.ConsultarNFSe(edtChaveAcesso.Text);
-    getRetornoTipadoX;
-    getRetornoJsonX;
-    getRetornoCSVX;
-  end
-  else
-  begin
-    mmXML.Text := NFSe.ConsultarNFSe(edtChaveAcesso.Text);
-    getRetornoTipado;
-    getRetornoJson;
-    getRetornoCSV;
-  end;
+
+  mmXML.Text := NFSe.ConsultarNFSe(edtChaveAcesso.Text);
+  getRetornoTipado;
+  getRetornoJson;
+  getRetornoCSV;
 end;
 
 procedure TfrmExemplo.btnCancelarClick(Sender: TObject);
 begin
-  if UsarOCX then
-  begin
-    NFSeX.CancelarNFSe(edtChaveAcesso.Text);
-    getRetornoTipadoX;
-    getRetornoJsonX;
-    getRetornoCSVX;
-  end
-  else
-  begin
-    NFSe.CancelarNFSe(edtChaveAcesso.Text);
-    getRetornoTipado;
-    getRetornoJson;
-    getRetornoCSV;
-  end;
+  NFSe.CancelarNFSe(edtChaveAcesso.Text);
+  getRetornoTipado;
+  getRetornoJson;
+  getRetornoCSV;
 end;
 
 procedure TfrmExemplo.btnEmailClick(Sender: TObject);
@@ -612,35 +474,19 @@ begin
   _Email := TStringList.Create;
   try
     _Email.Add('teste email');
-    if UsarOCX then
-    begin
-      NFSeX.EmailServidorSmtp := 'smtp.gmail.com';
-      NFSeX.EmailRemetente := 'EmailRemetente';
-      NFSeX.EmailAssunto := 'EmailAssunto';
-      NFSeX.EmailMensagem := 'EmailMensagem';
-      NFSeX.EmailUsuario := 'EmailUsuario';
-      NFSeX.EmailSenha := 'EmailSenha';
-      NFSeX.EmailDestinatario := 'EmailDestinatario';
-      NFSeX.EmailTimeOut := 30000;
-      NFSeX.EmailAutenticacao := True;
-      NFSeX.EmailPorta := 587;
-      NFSeX.EnviarEmail(_Email.Text);
-    end
-    else
-    begin
-      NFSe.EmailSettings.ServidorSmtp := 'smtp.gmail.com';
-      NFSe.EmailSettings.EmailRemetente := 'EmailRemetente';
-      NFSe.EmailSettings.Assunto := 'EmailAssunto';
-      NFSe.EmailSettings.Mensagem := 'EmailMensagem';
-      NFSe.EmailSettings.Usuario := 'EmailUsuario';
-      NFSe.EmailSettings.Senha := 'EmailSenha';
-      NFSe.EmailSettings.EmailDestinatario := 'EmailDestinatario';
-      NFSe.EmailSettings.TimeOut := 30000;
-      NFSe.EmailSettings.Autenticacao := True;
-      NFSe.EmailSettings.Porta := 587;
-      NFSe.EmailSettings.UseSecureBlackBox := True;
-      NFSe.EnviarEmail(_Email);
-    end;
+
+    NFSe.EmailSettings.ServidorSmtp := 'smtp.gmail.com';
+    NFSe.EmailSettings.EmailRemetente := 'EmailRemetente';
+    NFSe.EmailSettings.Assunto := 'EmailAssunto';
+    NFSe.EmailSettings.Mensagem := 'EmailMensagem';
+    NFSe.EmailSettings.Usuario := 'EmailUsuario';
+    NFSe.EmailSettings.Senha := 'EmailSenha';
+    NFSe.EmailSettings.EmailDestinatario := 'EmailDestinatario';
+    NFSe.EmailSettings.TimeOut := 30000;
+    NFSe.EmailSettings.Autenticacao := True;
+    NFSe.EmailSettings.Porta := 587;
+    NFSe.EmailSettings.UseSecureBlackBox := True;
+    NFSe.EnviarEmail(_Email);
   finally
     _Email.Free;
   end;
@@ -648,10 +494,7 @@ end;
 
 procedure TfrmExemplo.btnAtualizaArquivosClick(Sender: TObject);
 begin
-  if UsarOCX then
-    NFSeX.AtualizarArquivos
-  else
-    NFSe.AtualizarArquivos;
+  NFSe.AtualizarArquivos;
 end;
 
 procedure TfrmExemplo.btnDistribuicaoDFeClick(Sender: TObject);
@@ -666,10 +509,6 @@ begin
   _frmDistribuicaoDFe := TFrmDistribuicaoDFe.Create(nil);
   try
     (Sender as TWinControl).Enabled := False;
-
-    _frmDistribuicaoDFe.NFSeX.ConfigurarSoftwareHouse(edtCNPJSoftwareHouse.Text, edtTokenSoftwareHouse.Text);
-    _frmDistribuicaoDFe.NFSeX.DiagnosticMode := False;
-    _frmDistribuicaoDFe.NFSeX.LoadConfig('');
 
     _frmDistribuicaoDFe.NFSe.ConfigurarSoftwareHouse(edtCNPJSoftwareHouse.Text, edtTokenSoftwareHouse.Text);
     _frmDistribuicaoDFe.NFSe.DiagnosticMode := False;

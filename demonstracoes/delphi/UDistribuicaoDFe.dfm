@@ -70,7 +70,7 @@ object FrmDistribuicaoDFe: TFrmDistribuicaoDFe
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 3
       OnClick = btnConsultarDFeClick
     end
     object btnTratarRetornoDFe: TButton
@@ -85,16 +85,8 @@ object FrmDistribuicaoDFe: TFrmDistribuicaoDFe
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 5
+      TabOrder = 4
       OnClick = btnTratarRetornoDFeClick
-    end
-    object chkOCX: TCheckBox
-      Left = 549
-      Top = 68
-      Width = 41
-      Height = 17
-      Caption = 'OCX'
-      TabOrder = 3
     end
     object edtDiretorioDestino: TEdit
       Left = 10
@@ -116,7 +108,7 @@ object FrmDistribuicaoDFe: TFrmDistribuicaoDFe
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 6
+      TabOrder = 5
       OnClick = btnDescompactarXmlZipClick
     end
   end
