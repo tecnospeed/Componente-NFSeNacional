@@ -1,4 +1,10 @@
-﻿## [2.1.1.129]
+﻿## [2.1.1.131]
+
+**Novidades**
+
+* OSRV-26776 - Implementado emissão de NFSe por decisão judicial. Mais informações em: https://atendimento.tecnospeed.com.br/hc/pt-br/articles/39545000491543
+
+## [2.1.1.129]
 
 **Novidades**
 
@@ -15,4 +21,5 @@
 **Novidades**
 
 * SRVP4G-444 - Lançamento do componente NFSe Nacional (Beta)
+
 
