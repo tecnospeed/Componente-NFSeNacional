@@ -1,4 +1,8 @@
-﻿## [2.1.1.131]
+﻿## [2.1.1.132]
+
+* Corre&ccedil;&otilde;es e melhorias diversos.
+
+## [2.1.1.131]
 
 **Novidades**
 
@@ -21,5 +25,6 @@
 **Novidades**
 
 * SRVP4G-444 - Lançamento do componente NFSe Nacional (Beta)
+
 
 
