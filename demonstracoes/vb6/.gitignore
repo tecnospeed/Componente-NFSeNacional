@@ -1,0 +1,10 @@
+# Gerados pelo VB6 ou pela demo em uso
+*.vbw
+*.log
+*.exe
+Log/
+LogErro/
+XmlImpressao/
+DFe/
+MSSCCPRJ.SCC
+spdLicense*.dat

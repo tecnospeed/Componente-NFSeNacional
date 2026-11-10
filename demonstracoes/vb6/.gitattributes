@@ -1,0 +1,4 @@
+# Demo VB6: o IDE do VB6 so le arquivos com CRLF e em ANSI (cp1252).
+# Nada aqui passa por conversao de fim de linha do git.
+* -text
+*.frx binary
