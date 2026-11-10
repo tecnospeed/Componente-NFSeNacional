@@ -1,102 +1,125 @@
 VERSION 5.00
-Begin VB.Form Form3 
-   BorderStyle     =   1  'Fixed Single
+Begin VB.Form Form3
+   BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Enviar Manifestação"
-   ClientHeight    =   4455
+   ClientHeight    =   4335
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   4725
-   LinkTopic       =   "Form1"
+   ClientWidth     =   5175
+   LinkTopic       =   "Form3"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4455
-   ScaleWidth      =   4725
-   StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton SairManifestacao 
-      Caption         =   "Cancelar"
-      Height          =   495
-      Left            =   2640
-      TabIndex        =   10
-      Top             =   3720
-      Width           =   1455
-   End
-   Begin VB.CommandButton EnviarManifestacao 
-      Caption         =   "Enviar"
-      Height          =   495
-      Left            =   120
-      TabIndex        =   9
-      Top             =   3720
-      Width           =   1575
-   End
-   Begin VB.TextBox MotivoRejeicao 
-      Height          =   375
-      Left            =   120
-      TabIndex        =   8
-      Top             =   3000
-      Width           =   3975
-   End
-   Begin VB.TextBox CodRejeicao 
-      Height          =   285
-      Left            =   120
-      TabIndex        =   6
-      Top             =   2160
-      Width           =   615
-   End
-   Begin VB.CheckBox CheckRejeicao 
-      Caption         =   "Rejeição"
-      Height          =   375
-      Left            =   2880
-      TabIndex        =   4
-      Top             =   600
-      Width           =   1335
-   End
-   Begin VB.CheckBox CheckAutorizacao 
-      Caption         =   "Autorização"
-      Height          =   255
-      Left            =   2880
-      TabIndex        =   3
-      Top             =   120
-      Width           =   1455
-   End
-   Begin VB.CheckBox CheckIntermediario 
-      Caption         =   "Intermediário"
-      Height          =   375
-      Left            =   120
-      TabIndex        =   2
-      Top             =   1200
-      Width           =   1335
-   End
-   Begin VB.CheckBox CheckTomador 
-      Caption         =   "Tomador"
-      Height          =   375
-      Left            =   120
-      TabIndex        =   1
-      Top             =   600
-      Width           =   975
-   End
-   Begin VB.CheckBox CheckPrestador 
-      Caption         =   "Prestador"
-      Height          =   255
+   ScaleHeight     =   4335
+   ScaleWidth      =   5175
+   ShowInTaskbar   =   0   'False
+   StartUpPosition =   1  'CenterOwner
+   Begin VB.Frame fraAutor
+      Caption         =   "Quem manifesta"
+      Height          =   1335
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   1335
+      Width           =   2415
+      Begin VB.OptionButton optPrestador
+         Caption         =   "Prestador"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   1
+         Top             =   300
+         Value           =   -1  'True
+         Width           =   2175
+      End
+      Begin VB.OptionButton optTomador
+         Caption         =   "Tomador"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   2
+         Top             =   600
+         Width           =   2175
+      End
+      Begin VB.OptionButton optIntermediario
+         Caption         =   "Intermediário"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   3
+         Top             =   900
+         Width           =   2175
+      End
    End
-   Begin VB.Label Label2 
-      Caption         =   "Caso o código seja =9, informe o motivo:"
-      Height          =   255
+   Begin VB.Frame fraTipo
+      Caption         =   "Manifestação"
+      Height          =   1335
+      Left            =   2640
+      TabIndex        =   4
+      Top             =   120
+      Width           =   2415
+      Begin VB.OptionButton optConfirmacao
+         Caption         =   "Confirmação"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   5
+         Top             =   300
+         Value           =   -1  'True
+         Width           =   2175
+      End
+      Begin VB.OptionButton optRejeicao
+         Caption         =   "Rejeição"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   6
+         Top             =   600
+         Width           =   2175
+      End
+   End
+   Begin VB.TextBox edtCodigoMotivo
+      Height          =   315
+      Left            =   120
+      TabIndex        =   8
+      Top             =   1800
+      Width           =   975
+   End
+   Begin VB.TextBox edtDescricaoMotivo
+      Height          =   735
+      Left            =   120
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
+      TabIndex        =   10
+      Top             =   2520
+      Width           =   4935
+   End
+   Begin VB.CommandButton btnEnviar
+      Caption         =   "&Enviar"
+      Default         =   -1  'True
+      Height          =   495
+      Left            =   1560
+      TabIndex        =   11
+      Top             =   3600
+      Width           =   1695
+   End
+   Begin VB.CommandButton btnCancelar
+      Cancel          =   -1  'True
+      Caption         =   "&Cancelar"
+      Height          =   495
+      Left            =   3360
+      TabIndex        =   12
+      Top             =   3600
+      Width           =   1695
+   End
+   Begin VB.Label lblCodigoMotivo
+      Caption         =   "Código do motivo"
+      Height          =   225
       Left            =   120
       TabIndex        =   7
-      Top             =   2640
-      Width           =   3135
+      Top             =   1560
+      Width           =   4935
    End
-   Begin VB.Label Label1 
-      Caption         =   "Em caso de rejeição, informe o código:"
-      Height          =   255
+   Begin VB.Label lblDescricaoMotivo
+      Caption         =   "Descrição do motivo"
+      Height          =   225
       Left            =   120
-      TabIndex        =   5
-      Top             =   1800
-      Width           =   3135
+      TabIndex        =   9
+      Top             =   2280
+      Width           =   4935
    End
 End
 Attribute VB_Name = "Form3"
@@ -104,136 +127,73 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' Define variáveis globais para armazenar os valores necessários
-Dim aTipoManifestacao As Integer
-Dim aChaveAcesso, aCodigoMotivo, aDescricaoMotivo, aManifestacao As String
+Option Explicit
 
+Public Confirmado As Boolean
+Public TipoManifestacao As Long
+Public CodigoMotivo As String
+Public DescricaoMotivo As String
 
-
-
-Private Sub CheckAutorizacao_Click()
-    If CheckAutorizacao.Value = 1 Then
-        CheckRejeicao.Value = 0
-        CheckRejeicao.Enabled = False
-        CodRejeicao.Enabled = False
-        MotivoRejeicao.Enabled = False
-    Else
-        CheckRejeicao.Enabled = True
-    End If
+Private Sub Form_Load()
+    Confirmado = False
+    AtualizarCamposRejeicao
 End Sub
 
-Private Sub CheckRejeicao_Click()
-    If CheckRejeicao.Value = 1 Then
-        CheckAutorizacao.Value = 0
-        CheckAutorizacao.Enabled = False
-        CodRejeicao.Enabled = True
-        If CodRejeicao.Text = "9" Then
-            MotivoRejeicao.Enabled = True
-        Else
-            MotivoRejeicao.Enabled = False
+Private Sub optConfirmacao_Click()
+    AtualizarCamposRejeicao
+End Sub
+
+Private Sub optRejeicao_Click()
+    AtualizarCamposRejeicao
+End Sub
+
+Private Sub AtualizarCamposRejeicao()
+    lblCodigoMotivo.Enabled = optRejeicao.Value
+    edtCodigoMotivo.Enabled = optRejeicao.Value
+    lblDescricaoMotivo.Enabled = optRejeicao.Value
+    edtDescricaoMotivo.Enabled = optRejeicao.Value
+End Sub
+
+Private Sub btnEnviar_Click()
+    ' Confirmação 1/3/5 e rejeição 2/4/6
+    If optTomador.Value Then
+        TipoManifestacao = 3
+    ElseIf optIntermediario.Value Then
+        TipoManifestacao = 5
+    Else
+        TipoManifestacao = 1
+    End If
+
+    If optRejeicao.Value Then
+        TipoManifestacao = TipoManifestacao + 1
+        CodigoMotivo = Trim$(edtCodigoMotivo.Text)
+        DescricaoMotivo = Trim$(edtDescricaoMotivo.Text)
+
+        If CodigoMotivo = "" Then
+            MsgBox "Informe o código do motivo.", vbExclamation
+            Exit Sub
+        End If
+        If CodigoMotivo = "9" And DescricaoMotivo = "" Then
+            MsgBox "Código 9 exige a descrição do motivo.", vbExclamation
+            Exit Sub
         End If
     Else
-        CheckAutorizacao.Enabled = True
-        CodRejeicao.Enabled = False
-        MotivoRejeicao.Enabled = False
-    End If
-End Sub
-
-Private Sub CheckPrestador_Click()
-    If CheckPrestador.Value = 1 Then
-        CheckTomador.Value = 0
-        CheckIntermediario.Value = 0
-    End If
-End Sub
-
-Private Sub CheckTomador_Click()
-    If CheckTomador.Value = 1 Then
-        CheckPrestador.Value = 0
-        CheckIntermediario.Value = 0
-    End If
-End Sub
-
-Private Sub CheckIntermediario_Click()
-    If CheckIntermediario.Value = 1 Then
-        CheckPrestador.Value = 0
-        CheckTomador.Value = 0
-    End If
-End Sub
-
-Private Sub CodRejeicao_Change()
-    aCodigoMotivo = CodRejeicao.Text
-    If aCodigoMotivo = "9" Then
-        MotivoRejeicao.Enabled = True
-    Else
-        MotivoRejeicao.Enabled = False
-        MotivoRejeicao.Text = ""
-    End If
-End Sub
-
-Private Sub MotivoRejeicao_Change()
-    If aCodigoMotivo = "9" Then
-        aDescricaoMotivo = MotivoRejeicao.Text
-    Else
-        aDescricaoMotivo = ""
-    End If
-End Sub
-
-Private Sub CarregaChaveAcesso()
-
-    aChaveAcesso = Form2.edtChaveDPS.Text
-    
-    If Trim(aChaveAcesso) = "" Then
-        MsgBox "Por favor, preencha o campo Chave de Acesso da NFSe na tela anterior", vbExclamation
-        Exit Sub
+        CodigoMotivo = ""
+        DescricaoMotivo = ""
     End If
 
+    Confirmado = True
+    Me.Hide
 End Sub
 
-Private Sub EnviarManifestacao_Click()
-    
-    CarregaChaveAcesso
-    
-    ' Determina o tipo de manifestação
-    If CheckPrestador.Value = 1 Then
-        If CheckAutorizacao.Value = 1 Then
-            aTipoManifestacao = 1 ' Prestador - Confirmação
-        ElseIf CheckRejeicao.Value = 1 Then
-            aTipoManifestacao = 2 ' Prestador - Rejeição
-        End If
-    ElseIf CheckTomador.Value = 1 Then
-        If CheckAutorizacao.Value = 1 Then
-            aTipoManifestacao = 3 ' Tomador - Confirmação
-        ElseIf CheckRejeicao.Value = 1 Then
-            aTipoManifestacao = 4 ' Tomador - Rejeição
-        End If
-    ElseIf CheckIntermediario.Value = 1 Then
-        If CheckAutorizacao.Value = 1 Then
-            aTipoManifestacao = 5 ' Intermediário - Confirmação
-        ElseIf CheckRejeicao.Value = 1 Then
-            aTipoManifestacao = 6 ' Intermediário - Rejeição
-        End If
+Private Sub btnCancelar_Click()
+    Confirmado = False
+    Me.Hide
+End Sub
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    If UnloadMode = vbFormControlMenu Then
+        Cancel = True
+        btnCancelar_Click
     End If
-    
-
-    ' Obtém o código do motivo
-    aCodigoMotivo = CodRejeicao.Text
-
-    ' Obtém a descrição do motivo (se aplicável)
-    If aCodigoMotivo = "9" Then
-        aDescricaoMotivo = MotivoRejeicao.Text
-    Else
-        aDescricaoMotivo = ""
-    End If
-
-    ' Chama o método para enviar a manifestação
-    
-    Form2.mmXMLEnvio.Text = spdNFSeNacional.EnviarManifestacao(aTipoManifestacao, aChaveAcesso, aCodigoMotivo, aDescricaoMotivo)
-    
-
-    MsgBox "Manifestação enviada com sucesso!"
 End Sub
-
-Private Sub SairManifestacao_Click()
-    Unload Me
-End Sub
-
