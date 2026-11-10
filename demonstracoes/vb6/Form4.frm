@@ -215,6 +215,11 @@ Private Sub btnConsultarDFe_Click()
         Exit Sub
     End If
 
+    txtRetorno.Text = ""
+    txtRetJson.Text = ""
+    txtRetCsv.Text = ""
+    txtRetTipado.Text = ""
+
     On Error GoTo Erro
     Screen.MousePointer = vbHourglass
     txtRetorno.Text = spdNFSeNacional.ConsultarDistribuicaoDFe(TipoConsulta(), Trim$(edtChaveOrNsu.Text))
@@ -241,8 +246,6 @@ Private Sub btnTratarRetornoDFe_Click()
     End If
 
     On Error GoTo Erro
-    If Dir$(Diretorio, vbDirectory) = "" Then MkDir Diretorio
-
     Screen.MousePointer = vbHourglass
     spdNFSeNacional.TratarRetornoConsultaDFe txtRetorno.Text, Diretorio
     MostrarRetornos

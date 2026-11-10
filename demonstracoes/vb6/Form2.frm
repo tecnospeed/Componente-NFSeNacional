@@ -710,6 +710,7 @@ Private Sub btnEnviar_Click()
     ArquivoTx2 = EscolherArquivo("Selecione o TX2 da DPS", "Arquivo TX2 (*.tx2)|*.tx2|Todos os arquivos (*.*)|*.*", App.Path)
     If ArquivoTx2 = "" Then Exit Sub
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     mmRetorno.Text = spdNFSeNacional.Enviar(ArquivoTx2)
     MostrarRetornos
@@ -725,6 +726,7 @@ Private Sub btnConsultarNFSe_Click()
     If Not PrepararOperacao() Then Exit Sub
     If Not ChaveInformada() Then Exit Sub
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     mmRetorno.Text = spdNFSeNacional.ConsultarNFSe(Trim$(edtChaveAcesso.Text))
     MostrarRetornos
@@ -745,8 +747,8 @@ Private Sub btnCancelarNFSe_Click()
     Chave = Trim$(edtChaveAcesso.Text)
     If Not ConfirmarProducao() Then Exit Sub
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
-    mmRetorno.Text = ""
     spdNFSeNacional.CancelarNFSe Chave
     MostrarRetornos
     Screen.MousePointer = vbDefault
@@ -777,6 +779,7 @@ Private Sub btnConsultarEventos_Click()
     Unload Form5
     edtChaveAcesso.Text = Chave
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     If CodigoEvento = 0 Then
         mmRetorno.Text = spdNFSeNacional.ConsultarEventosNFSe(Chave)
@@ -812,6 +815,7 @@ Private Sub btnEnviarManifestacao_Click()
     DescricaoMotivo = Form3.DescricaoMotivo
     Unload Form3
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     mmRetorno.Text = spdNFSeNacional.EnviarManifestacao(TipoManifestacao, Trim$(edtChaveAcesso.Text), _
         CodigoMotivo, DescricaoMotivo)
@@ -827,6 +831,7 @@ Private Sub btnMunicipiosConveniados_Click()
     On Error GoTo Erro
     If Not PrepararOperacao() Then Exit Sub
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     mmRetorno.Text = spdNFSeNacional.ConsultarMunicipiosConveniados
     SSTab2.Tab = ABA_RETORNO_XML
@@ -851,6 +856,7 @@ Private Sub btnConsultarDPS_Click()
     SerieDps = Trim$(InputBox("Série da DPS:", "Consultar NFS-e por DPS"))
     If SerieDps = "" Then Exit Sub
 
+    LimparRetornos
     Screen.MousePointer = vbHourglass
     mmRetorno.Text = spdNFSeNacional.ConsultarNFSePorDps(NumeroDps, SerieDps)
     MostrarRetornos
@@ -897,6 +903,15 @@ End Sub
 '------------------------------------------------------------------------------
 ' Retornos
 '------------------------------------------------------------------------------
+
+' Uma operação que falha não deixa na tela o retorno da anterior.
+Private Sub LimparRetornos()
+    mmRetorno.Text = ""
+    mmJSON.Text = ""
+    mmCSV.Text = ""
+    mmTipado.Text = ""
+    mmXMLImpressao.Text = ""
+End Sub
 
 Private Sub MostrarRetornos()
     Dim i As Long
